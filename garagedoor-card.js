@@ -6,7 +6,7 @@
 import { LitElement, html, css } from "https://unpkg.com/lit@3.1.4/index.js?module";
 
 class GaragedoorCard extends LitElement {
-  static properties = { hass: {}, _config: {} };
+  static properties = { hass: {}, _config: {}, _sliderOpen: { state: true } };
 
   /* —— Configurable gap values (px, based on 256‑px canvas) —— */
   #sideGap = 8;   // dark gap to left & right of slats
@@ -70,7 +70,7 @@ class GaragedoorCard extends LitElement {
     .slats {
       position: absolute;
       overflow: hidden;
-      pointer-events: none;
+      pointer-events: auto;
     }
 
     .slat-wrapper {
@@ -95,12 +95,31 @@ class GaragedoorCard extends LitElement {
     .action-btn ha-icon { --mdc-icon-size: 26px; margin-bottom: 4px; }
     .action-btn:hover { background: rgba(0,191,255,0.08); }
     .action-btn:active { background: rgba(0,191,255,0.15); }
+
+    .slider-container {
+      position: absolute;
+      bottom: 64px;
+      left: 12px;
+      right: 12px;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 12px;
+      box-shadow: 0 0 6px var(--garagedoor-glow, #00bfff);
+    }
+
+    .slider-container input {
+      width: 100%;
+    }
   `;
 
   /* —— Setup —— */
   setConfig(cfg) { if (!cfg.entity) throw new Error("You must specify an entity."); this._config = cfg; }
   get hass() { return this._hass; }
   set hass(v) { this._hass = v; this.requestUpdate(); }
+  constructor() {
+    super();
+    this._sliderOpen = false;
+  }
   _stateObj() { return this.hass?.states?.[this._config.entity]; }
   _call(svc) { this.hass.callService("cover", svc, { entity_id: this._config.entity }); }
 
@@ -111,6 +130,21 @@ class GaragedoorCard extends LitElement {
     this.hass.callService("light", ls.state === "on" ? "turn_off" : "turn_on", {
       entity_id: this._config.light_entity,
     });
+  }
+
+  _toggleSlider() {
+    this._sliderOpen = !this._sliderOpen;
+  }
+
+  _setPosition(ev) {
+    const pos = Number(ev.target.value);
+    if (!Number.isNaN(pos)) {
+      this.hass.callService("cover", "set_cover_position", {
+        entity_id: this._config.entity,
+        position: pos,
+      });
+    }
+    this._sliderOpen = false;
   }
 
   /* —— Render —— */
@@ -125,6 +159,9 @@ class GaragedoorCard extends LitElement {
         <div class="icon-wrapper">
           ${this._houseSvg()}
           ${this._slats(pos)}
+          ${this._sliderOpen
+            ? html`<div class="slider-container"><input type="range" min="0" max="100" .value=${pos} @change=${(e) => this._setPosition(e)}></div>`
+            : ''}
           ${light ? html`<ha-icon
               class="lightbulb ${light.state === 'on' ? 'on' : ''}"
               icon="${light.state === 'on' ? 'mdi:lightbulb' : 'mdi:lightbulb-outline'}"
@@ -155,6 +192,7 @@ class GaragedoorCard extends LitElement {
 
     return html`<div
         class="slats"
+        @dblclick=${() => this._toggleSlider()}
         style="left:${this.#openLeft + this.#sideGap}px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px;">
       <div class="slat-wrapper" style="transform: translateY(${translate}px);">
         ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
