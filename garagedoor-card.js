@@ -116,22 +116,12 @@ class GaragedoorCard extends LitElement {
 
     const translate = -(pos / 100) * containerHeight; // move slats together
 
-    return html`<div class="slats" style="left:${
-        this.#openLeft + this.#sideGap
-      }px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px; transform: translateY(${translate}px);">
-      ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
-=======
-    const containerWidth = this.#openWidth - 2 * this.#sideGap;    // 170 - side gaps
-    const maxHeight      = this.#openHeight - 2 * this.#topGap;    // 96 - top+bottom gaps
-    const height         = Math.max(0, Math.min(maxHeight, maxHeight * (1 - pos / 100)));
-
-    return html`<div class="slats" style="left:${
-        this.#openLeft + this.#sideGap
-      }px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${height}px;">
-      <div class="slat-wrapper">
+    return html`<div
+        class="slats"
+        style="left:${this.#openLeft + this.#sideGap}px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px;">
+      <div class="slat-wrapper" style="transform: translateY(${translate}px);">
         ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
       </div>
-
     </div>`;
   }
 
