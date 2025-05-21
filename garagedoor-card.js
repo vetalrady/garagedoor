@@ -11,6 +11,7 @@ class GaragedoorCard extends LitElement {
   /* —— Configurable gap values (px, based on 256‑px canvas) —— */
   #sideGap = 8;   // dark gap to left & right of slats
   #topGap  = 6;   // dark strip above slats at every position
+  #bottomGap = 6; // dark strip below slats (was tied to topGap)
   #openLeft = 43; // opening left offset inside 256‑px canvas
   #openTop  = 117; // opening top offset
   #openWidth = 170;
@@ -49,7 +50,7 @@ class GaragedoorCard extends LitElement {
     .door-svg { width: 256px; height: 256px; }
     .door-svg path { fill: var(--garagedoor-glow, #00bfff); stroke: none; }
 
-    /* Slat container – side & top gaps preserved */
+    /* Slat container – side, top & bottom gaps preserved */
     .slats {
       position: absolute;
       overflow: hidden;
@@ -112,7 +113,7 @@ class GaragedoorCard extends LitElement {
   _slats(pos) {
 
     const containerWidth  = this.#openWidth  - 2 * this.#sideGap;   // 170 - side gaps
-    const containerHeight = this.#openHeight - 2 * this.#topGap;   // 96 - top+bottom gaps
+    const containerHeight = this.#openHeight - this.#topGap - this.#bottomGap;   // 96 - top & bottom gaps
 
     const translate = -(pos / 100) * containerHeight; // move slats together
 
