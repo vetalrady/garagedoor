@@ -9,7 +9,11 @@ Add the card in your Lovelace configuration:
 ```yaml
 - type: custom:garagedoor-card
   entity: cover.garage_door
+  light_entity: light.garage_light  # optional
 ```
+
+If `light_entity` is provided, a light bulb icon appears on the roof. Clicking
+the icon toggles the specified light and the icon glows when the light is on.
 
 ### Adjustable values
 
