@@ -48,6 +48,21 @@ class GaragedoorCard extends LitElement {
 
     .icon-wrapper { position: relative; margin-bottom: 12px; width: 256px; height: 256px; }
 
+    .lightbulb {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      --mdc-icon-size: 32px;
+      color: var(--garagedoor-glow, #00bfff);
+      cursor: pointer;
+      transition: color 0.2s ease-in-out, filter 0.2s ease-in-out;
+    }
+
+    .lightbulb.on {
+      color: #ffd700;
+      filter: drop-shadow(0 0 6px #ffd700);
+    }
+
     .door-svg { width: 256px; height: 256px; }
     .door-svg path { fill: var(--garagedoor-glow, #00bfff); stroke: none; }
 
@@ -89,17 +104,32 @@ class GaragedoorCard extends LitElement {
   _stateObj() { return this.hass?.states?.[this._config.entity]; }
   _call(svc) { this.hass.callService("cover", svc, { entity_id: this._config.entity }); }
 
+  _lightObj() { return this._config.light_entity ? this.hass?.states?.[this._config.light_entity] : null; }
+  _toggleLight() {
+    const ls = this._lightObj();
+    if (!ls) return;
+    this.hass.callService("light", ls.state === "on" ? "turn_off" : "turn_on", {
+      entity_id: this._config.light_entity,
+    });
+  }
+
   /* —— Render —— */
   render() {
     const st = this._stateObj();
     if (!st) return html`<ha-card>Entity not found</ha-card>`;
     const pos = st.attributes.current_position ?? (st.state === "open" ? 100 : 0);
+    const light = this._lightObj();
     return html`
       <ha-card>
         <span class="readout">${pos}%</span>
         <div class="icon-wrapper">
           ${this._houseSvg()}
           ${this._slats(pos)}
+          ${light ? html`<ha-icon
+              class="lightbulb ${light.state === 'on' ? 'on' : ''}"
+              icon="${light.state === 'on' ? 'mdi:lightbulb' : 'mdi:lightbulb-outline'}"
+              @click=${() => this._toggleLight()}
+            ></ha-icon>` : ''}
         </div>
         <div class="actions">
           <button class="action-btn" @click=${() => this._call("close_cover")}
