@@ -54,7 +54,10 @@ class GaragedoorCard extends LitElement {
       position: absolute;
       overflow: hidden;
       pointer-events: none;
-      transform-origin: top;
+    }
+
+    .slat-wrapper {
+      position: relative;
     }
 
     .slat {
@@ -107,13 +110,16 @@ class GaragedoorCard extends LitElement {
   }
 
   _slats(pos) {
-    const containerWidth  = this.#openWidth  - 2 * this.#sideGap;   // 170 - side gaps
-    const containerHeight = this.#openHeight - 2 * this.#topGap;    // 96 - top+bottom gaps
+    const containerWidth = this.#openWidth - 2 * this.#sideGap;    // 170 - side gaps
+    const maxHeight      = this.#openHeight - 2 * this.#topGap;    // 96 - top+bottom gaps
+    const height         = Math.max(0, Math.min(maxHeight, maxHeight * (1 - pos / 100)));
 
-    const translate = -(pos / 100) * containerHeight; // ensure constant top gap
-
-    return html`<div class="slats" style="left:${this.#openLeft + this.#sideGap}px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px; transform: translateY(${translate}px);">
-      ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
+    return html`<div class="slats" style="left:${
+        this.#openLeft + this.#sideGap
+      }px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${height}px;">
+      <div class="slat-wrapper">
+        ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
+      </div>
     </div>`;
   }
 
