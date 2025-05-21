@@ -70,6 +70,10 @@ class GaragedoorCard extends LitElement {
       box-shadow: 0 0 4px var(--garagedoor-glow, #00bfff);
     }
 
+    .slat:last-child {
+      margin-bottom: 1px;
+    }
+
     .actions { width: 100%; display: flex; gap: 24px; justify-content: center; }
     .action-btn { flex: 1 1 0; background: transparent; border: 2px solid var(--garagedoor-glow, #00bfff); border-radius: 12px; padding: 6px 0 4px 0; font: 600 18px/1.2 "Roboto", sans-serif; color: var(--garagedoor-glow, #00bfff); text-transform: uppercase; cursor: pointer; box-shadow: 0 0 5px var(--garagedoor-glow, #00bfff), inset 0 0 8px #000; display: flex; flex-direction: column; align-items: center; transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
     .action-btn ha-icon { --mdc-icon-size: 26px; margin-bottom: 4px; }
