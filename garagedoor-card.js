@@ -12,6 +12,7 @@ class GaragedoorCard extends LitElement {
   #sideGap = 8;   // dark gap to left & right of slats
   #topGap  = 6;   // dark strip above slats at every position
   #bottomGap = 6; // dark strip below slats (was tied to topGap)
+  #closedOffset = 0; // slat offset when closed (tapered as door opens)
   #openLeft = 43; // opening left offset inside 256‑px canvas
   #openTop  = 117; // opening top offset
   #openWidth = 170;
@@ -119,7 +120,8 @@ class GaragedoorCard extends LitElement {
     const containerWidth  = this.#openWidth  - 2 * this.#sideGap;   // 170 - side gaps
     const containerHeight = this.#openHeight - this.#topGap - this.#bottomGap;   // 96 - top & bottom gaps
 
-    const translate = -(pos / 100) * containerHeight; // move slats together
+    const offset = this.#closedOffset * (1 - pos / 100); // taper offset as it opens
+    const translate = offset - (pos / 100) * containerHeight; // move slats together
 
     return html`<div
         class="slats"
