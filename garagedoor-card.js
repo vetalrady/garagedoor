@@ -10,8 +10,8 @@ class GaragedoorCard extends LitElement {
 
   /* —— Configurable gap values (px, based on 256‑px canvas) —— */
   #sideGap = 8;   // dark gap to left & right of slats
-  #topGap  = 6;   // dark strip above slats at every position
-  #bottomGap = 6; // dark strip below slats (was tied to topGap)
+  #topGap  = 3;   // dark strip above slats at every position
+  #bottomGap = 0; // dark strip below slats (was tied to topGap)
   #closedOffset = 0; // slat offset when closed (tapered as door opens)
   #openLeft = 43; // opening left offset inside 256‑px canvas
   #openTop  = 117; // opening top offset
@@ -64,7 +64,7 @@ class GaragedoorCard extends LitElement {
 
     .slat {
       width: 100%;
-      height: 14px;
+      height: 16px;
       background: var(--garagedoor-glow, #00bfff);
       margin: 3px 0;
       border-radius: 1px;
