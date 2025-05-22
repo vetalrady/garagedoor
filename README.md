@@ -24,6 +24,9 @@ Double tapping on the door slats now opens Home Assistant's **More Info**
 dialog for the configured garage door entity. Previously this action opened a
 slider overlay for selecting a specific position.
 
+The **Open** and **Close** buttons also require a double tap. When used in the
+iOS companion app, the buttons trigger a light haptic feedback.
+
 ### Adjustable values
 
 Several values near the top of `garagedoor-card.js` can be modified to fine-tune the layout. Among them is the new `#closedOffset` field which controls the extra translation applied to the slats when the door is fully closed. Increasing it shifts all slats downward at 0% and tapers the offset as the door opens.
