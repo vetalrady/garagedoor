@@ -50,9 +50,9 @@ class GaragedoorCard extends LitElement {
 
     .lightbulb {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      --mdc-icon-size: 32px;
+      top: 22px;
+      right: 22px;
+      --mdc-icon-size: 60px;
       color: var(--garagedoor-glow, #00bfff);
       cursor: pointer;
       transition: color 0.2s ease-in-out, filter 0.2s ease-in-out;
