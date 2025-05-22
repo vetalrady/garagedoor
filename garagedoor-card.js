@@ -131,7 +131,19 @@ class GaragedoorCard extends LitElement {
     this._sliderOpen = false;
   }
   _stateObj() { return this.hass?.states?.[this._config.entity]; }
-  _call(svc) { this.hass.callService("cover", svc, { entity_id: this._config.entity }); }
+  _fireHaptic(type) {
+    this.dispatchEvent(
+      new CustomEvent('haptic', {
+        bubbles: true,
+        composed: true,
+        detail: type,
+      })
+    );
+  }
+  _call(svc) {
+    this.hass.callService("cover", svc, { entity_id: this._config.entity });
+    this._fireHaptic('light');
+  }
 
   _lightObj() { return this._config.light_entity ? this.hass?.states?.[this._config.light_entity] : null; }
   _obstructionObj() { return this._config.obstruction_entity ? this.hass?.states?.[this._config.obstruction_entity] : null; }
@@ -194,9 +206,9 @@ class GaragedoorCard extends LitElement {
             : ''}
         </div>
         <div class="actions">
-          <button class="action-btn" @click=${() => this._call("close_cover")}
+          <button class="action-btn" @dblclick=${() => this._call("close_cover")}
             ><ha-icon icon="mdi:arrow-down-bold"></ha-icon><span>Close</span></button>
-          <button class="action-btn" @click=${() => this._call("open_cover")}
+          <button class="action-btn" @dblclick=${() => this._call("open_cover")}
             ><ha-icon icon="mdi:arrow-up-bold"></ha-icon><span>Open</span></button>
         </div>
       </ha-card>`;
