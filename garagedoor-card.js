@@ -169,6 +169,11 @@ class GaragedoorCard extends LitElement {
     );
   }
 
+  _slatsDblClick() {
+    this._showMoreInfo();
+    this._fireHaptic('light');
+  }
+
   _setPosition(ev) {
     const pos = Number(ev.target.value);
     if (!Number.isNaN(pos)) {
@@ -229,7 +234,7 @@ class GaragedoorCard extends LitElement {
 
     return html`<div
         class="slats"
-        @dblclick=${() => this._showMoreInfo()}
+        @dblclick=${() => this._slatsDblClick()}
         style="left:${this.#openLeft + this.#sideGap}px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px;">
       <div class="slat-wrapper" style="transform: translateY(${translate}px);">
         ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}
