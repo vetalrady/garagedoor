@@ -63,6 +63,16 @@ class GaragedoorCard extends LitElement {
       filter: drop-shadow(0 0 6px #ffd700);
     }
 
+    .obstruction {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      --mdc-icon-size: 60px;
+      color: #ff3333;
+      filter: drop-shadow(0 0 6px #ff3333);
+    }
+
     .door-svg { width: 256px; height: 256px; }
     .door-svg path { fill: var(--garagedoor-glow, #00bfff); stroke: none; }
 
@@ -124,6 +134,7 @@ class GaragedoorCard extends LitElement {
   _call(svc) { this.hass.callService("cover", svc, { entity_id: this._config.entity }); }
 
   _lightObj() { return this._config.light_entity ? this.hass?.states?.[this._config.light_entity] : null; }
+  _obstructionObj() { return this._config.obstruction_entity ? this.hass?.states?.[this._config.obstruction_entity] : null; }
   _toggleLight() {
     const ls = this._lightObj();
     if (!ls) return;
@@ -163,6 +174,7 @@ class GaragedoorCard extends LitElement {
     if (!st) return html`<ha-card>Entity not found</ha-card>`;
     const pos = st.attributes.current_position ?? (st.state === "open" ? 100 : 0);
     const light = this._lightObj();
+    const obstruction = this._obstructionObj();
     return html`
       <ha-card>
         <span class="readout">${pos}%</span>
@@ -177,6 +189,9 @@ class GaragedoorCard extends LitElement {
               icon="${light.state === 'on' ? 'mdi:lightbulb' : 'mdi:lightbulb-outline'}"
               @click=${() => this._toggleLight()}
             ></ha-icon>` : ''}
+          ${obstruction?.state === 'on'
+            ? html`<ha-icon class="obstruction" icon="mdi:alert-octagon"></ha-icon>`
+            : ''}
         </div>
         <div class="actions">
           <button class="action-btn" @click=${() => this._call("close_cover")}
