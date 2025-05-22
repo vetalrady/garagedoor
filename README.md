@@ -21,8 +21,9 @@ If `obstruction_entity` is provided and its state is `on`, a glowing
 obstruction.
 
 Double tapping on the door slats now opens Home Assistant's **More Info**
-dialog for the configured garage door entity. Previously this action opened a
-slider overlay for selecting a specific position.
+dialog for the configured garage door entity and triggers a light haptic
+feedback on supporting devices. Previously this action opened a slider overlay
+for selecting a specific position.
 
 The **Open** and **Close** buttons also require a double tap. When used in the
 iOS companion app, the buttons trigger a light haptic feedback.
