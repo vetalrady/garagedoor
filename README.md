@@ -10,10 +10,15 @@ Add the card in your Lovelace configuration:
 - type: custom:garagedoor-card
   entity: cover.garage_door
   light_entity: light.garage_light  # optional
+  obstruction_entity: binary_sensor.garage_obstruction  # optional
 ```
 
 If `light_entity` is provided, a light bulb icon appears on the roof. Clicking
 the icon toggles the specified light and the icon glows when the light is on.
+
+If `obstruction_entity` is provided and its state is `on`, a glowing
+`mdi:alert-octagon` icon appears at the bottom of the door to indicate an
+obstruction.
 
 Double tapping on the door slats now opens Home Assistant's **More Info**
 dialog for the configured garage door entity. Previously this action opened a
