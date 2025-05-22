@@ -136,6 +136,16 @@ class GaragedoorCard extends LitElement {
     this._sliderOpen = !this._sliderOpen;
   }
 
+  _showMoreInfo() {
+    this.dispatchEvent(
+      new CustomEvent('hass-more-info', {
+        bubbles: true,
+        composed: true,
+        detail: { entityId: this._config.entity },
+      })
+    );
+  }
+
   _setPosition(ev) {
     const pos = Number(ev.target.value);
     if (!Number.isNaN(pos)) {
@@ -192,7 +202,7 @@ class GaragedoorCard extends LitElement {
 
     return html`<div
         class="slats"
-        @dblclick=${() => this._toggleSlider()}
+        @dblclick=${() => this._showMoreInfo()}
         style="left:${this.#openLeft + this.#sideGap}px; top:${this.#openTop + this.#topGap}px; width:${containerWidth}px; height:${containerHeight}px;">
       <div class="slat-wrapper" style="transform: translateY(${translate}px);">
         ${Array.from({ length: 5 }).map(() => html`<div class="slat"></div>`)}

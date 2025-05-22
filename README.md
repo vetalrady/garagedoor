@@ -15,9 +15,9 @@ Add the card in your Lovelace configuration:
 If `light_entity` is provided, a light bulb icon appears on the roof. Clicking
 the icon toggles the specified light and the icon glows when the light is on.
 
-Double tapping on the door slats opens a slider that lets you set a specific
-position. Selecting a value closes the slider and sends a `set_cover_position`
-command to Home Assistant.
+Double tapping on the door slats now opens Home Assistant's **More Info**
+dialog for the configured garage door entity. Previously this action opened a
+slider overlay for selecting a specific position.
 
 ### Adjustable values
 
